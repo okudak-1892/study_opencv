@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 import cv2
 
-# cv2.cv.CV_FOURCC
 def cv_fourcc(c1, c2, c3, c4):
     return (ord(c1) & 255) + ((ord(c2) & 255) << 8) + \
         ((ord(c3) & 255) << 16) + ((ord(c4) & 255) << 24)
 
 
 if __name__ == '__main__':
-    # 定数定義
+
     ESC_KEY = 27     # Escキー
     INTERVAL= 33     # 待ち時間
     FRAME_RATE = 30  # fps
@@ -20,7 +19,6 @@ if __name__ == '__main__':
 
     DEVICE_ID = 0
 
-    # カメラ映像取得
     cap = cv2.VideoCapture(DEVICE_ID)
 
     # 保存ビデオファイルの準備
@@ -32,25 +30,21 @@ if __name__ == '__main__':
                           (width, height), \
                           True)
 
-    # ウィンドウの準備
+    # ウィンドウ準備
     cv2.namedWindow(ORG_WINDOW_NAME)
     cv2.namedWindow(GAUSSIAN_WINDOW_NAME)
 
-    # 変換処理ループ
     while end_flag == True:
-        # ガウシアン平滑化
+        # ガウシアンフィルタ
         g_frame = cv2.GaussianBlur(c_frame, (15, 15), 10)
 
-        # フレーム表示
+        # 表示
         cv2.imshow(ORG_WINDOW_NAME, c_frame)
         cv2.imshow(GAUSSIAN_WINDOW_NAME, g_frame)
 
-        #originalの反転（鏡状態）
+        #originalの反転
         original = cv2.flip(g_frame, 1)
         cv2.imshow('Inversion', original)
-
-        # フレーム書き込み
-        rec.write(g_frame)
 
         # Escキーで終了
         key = cv2.waitKey(INTERVAL)
@@ -63,4 +57,3 @@ if __name__ == '__main__':
     # 終了処理
     cv2.destroyAllWindows()
     cap.release()
-    rec.release()
