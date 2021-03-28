@@ -2,7 +2,7 @@
 import cv2
 
 if __name__ == '__main__':
-    # 定数定義
+   
     ESC_KEY = 27     # Escキー
     INTERVAL= 33     # 待ち時間
     FRAME_RATE = 30  # fps
@@ -23,31 +23,24 @@ if __name__ == '__main__':
     end_flag, c_frame = cap.read()
     height, width, channels = c_frame.shape
 
-    # ウィンドウの準備
+    # ウィンドウ準備
     cv2.namedWindow(ORG_WINDOW_NAME)
     cv2.namedWindow(GAUSSIAN_WINDOW_NAME)
 
-    # 変換処理ループ
     while end_flag == True:
 
         # 画像の取得と顔の検出
         img = c_frame
-        # img = cv2.flip(frame, 1)
         _, frame = cap.read()
-        # img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         face_list = cascade.detectMultiScale(img, minSize=(100, 100))
 
-        # 検出した顔に印を付ける
+        # 検出した顔を囲む
         for (x, y, w, h) in face_list:
             color = (0, 0, 225)
             pen_w = 3
             cv2.rectangle(img, (x, y), (x+w, y+h), color, thickness = pen_w)
 
-        # フレーム表示
-        # cv2.imshow(ORG_WINDOW_NAME, c_frame)
-        # cv2.imshow(GAUSSIAN_WINDOW_NAME, img)
-
-        #originalの反転（鏡状態）
+        #originalの反転
         original = cv2.flip(img, 1)
         cv2.imshow('Inversion', original)
 
